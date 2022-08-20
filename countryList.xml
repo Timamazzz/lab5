@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<CountrysList lastId="3">
+            
+    
+    <Country id="1">
+                        
+        
+        <name>Russia</name>
+                        
+        
+        <continent>Eurasia</continent>
+                        
+        
+        <area>17125191</area>
+                        
+        
+        <population>145557576</population>
+                        
+        
+        <capital>Moscow</capital>
+                    
+    
+    </Country>
+        
+    
+    <Country id="2">
+                
+        <name>Russia</name>
+                
+        <continent>Eurasia</continent>
+                
+        <area>17125191</area>
+                
+        <population>145557576</population>
+                
+        <capital>Moscow</capital>
+            
+    </Country>
+    
+    <Country id="3">
+        <name>Russia</name>
+        <continent>Eurasia</continent>
+        <area>17125191</area>
+        <population>145557576</population>
+        <capital>Moscow</capital>
+    </Country>
+</CountrysList>
