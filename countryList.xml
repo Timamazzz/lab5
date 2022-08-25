@@ -1,47 +1,163 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<CountrysList lastId="3">
-            
+<CountrysList lastId="4">
+                            
+    
+    
+    
+    
     
     <Country id="1">
-                        
+                                                        
         
-        <name>Russia</name>
-                        
         
-        <continent>Eurasia</continent>
-                        
         
-        <area>17125191</area>
-                        
         
-        <population>145557576</population>
-                        
         
-        <capital>Moscow</capital>
-                    
+        <name>RedactName</name>
+                                                        
+        
+        
+        
+        
+        
+        <continent>continent</continent>
+                                                        
+        
+        
+        
+        
+        
+        <area>1</area>
+                                                        
+        
+        
+        
+        
+        
+        <population>1</population>
+                                                        
+        
+        
+        
+        
+        
+        <capital>capital</capital>
+                                                    
+    
+    
+    
+    
     
     </Country>
-        
+                            
+    
+    
+    
+    
     
     <Country id="2">
-                
+                                                        
+        
+        
+        
+        
+        
         <name>Russia</name>
-                
+                                                        
+        
+        
+        
+        
+        
         <continent>Eurasia</continent>
-                
+                                                        
+        
+        
+        
+        
+        
         <area>17125191</area>
-                
+                                                        
+        
+        
+        
+        
+        
         <population>145557576</population>
-                
+                                                        
+        
+        
+        
+        
+        
         <capital>Moscow</capital>
-            
+                                                    
+    
+    
+    
+    
+    
     </Country>
+                            
+    
+    
+    
+    
     
     <Country id="3">
+                                                        
+        
+        
+        
+        
+        
         <name>Russia</name>
+                                                        
+        
+        
+        
+        
+        
         <continent>Eurasia</continent>
+                                                        
+        
+        
+        
+        
+        
         <area>17125191</area>
+                                                        
+        
+        
+        
+        
+        
         <population>145557576</population>
+                                                        
+        
+        
+        
+        
+        
         <capital>Moscow</capital>
+                                                    
+    
+    
+    
+    
+    
+    </Country>
+                        
+
+
+
+
+
+    <Country id="4">
+        <name>RedactName</name>
+        <continent>continent</continent>
+        <area>1</area>
+        <population>1</population>
+        <capital>capital</capital>
     </Country>
 </CountrysList>

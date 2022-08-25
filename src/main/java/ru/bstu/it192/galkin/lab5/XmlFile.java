@@ -7,7 +7,7 @@ import javax.xml.parsers.SAXParserFactory;
 import java.util.List;
 
 public class XmlFile {
-    protected static String path = "D:/University/Debts/Isis/lab5/countryList.xml";
+    protected static String path = "countryList.xml";
     protected List<Country> countries;
     protected int countCountries;
 
