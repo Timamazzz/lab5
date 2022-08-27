@@ -1,16 +1,12 @@
 package ru.bstu.it192.galkin.lab5;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +27,16 @@ public class MainController {
     public Button modeButton;
     public Button filterButton;
     XmlFile file = new XmlFile();
+
+    DataBase db = new DataBase();
     String mode = "xml";
 
-    Properties properties = new Properties();
+
     public void initialize() {
         try {
-            listView.setItems(FXCollections.observableList(file.getCountries()));
             setDisableButtons(true);
-            properties.load(new FileInputStream("config.properties"));
+
+            listView.setItems(FXCollections.observableList(file.getCountries()));
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText(e.getMessage());
@@ -47,13 +45,18 @@ public class MainController {
     }
     public void changeModeClick() {
         if(Objects.equals(mode, "xml")){
+            listView.setItems(FXCollections.observableList(db.getCountries()));
+
             mode = "database";
             modeButton.setText("Database mode");
+            setDisableButtons(true);
         }
         else {
             listView.setItems(FXCollections.observableList(file.getCountries()));
+
             mode = "xml";
             modeButton.setText("Xml mode");
+            setDisableButtons(true);
         }
     }
     public void setDisableButtons(boolean is) {
@@ -87,13 +90,12 @@ public class MainController {
                                 capitalTextField.getText().trim());
 
         if(Objects.equals(mode, "xml")){
-            WriteDomXml dom = new WriteDomXml();
-            dom.add(country);
-            file.read();
+            file.addCountry(country);
             listView.setItems(FXCollections.observableList(file.getCountries()));
         }
         else {
-
+            db.addCountry(country);
+            listView.setItems(FXCollections.observableList(db.getCountries()));
         }
     }
     public void redactButtonClick() throws ParserConfigurationException, IOException, TransformerException, SAXException {
@@ -106,8 +108,7 @@ public class MainController {
                                     capitalTextField.getText().trim()
                                             );
             if(Objects.equals(mode, "xml")){
-                WriteDomXml dom = new WriteDomXml();
-                dom.redact(country);
+                file.redactCountry(country);
                 file.read();
                 listView.setItems(FXCollections.observableList(file.getCountries()));
             }
@@ -117,7 +118,7 @@ public class MainController {
         }
         else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setContentText(properties.getProperty("messageEAC"));
+            alert.setContentText("Enter a country");
             alert.showAndWait();
             setDisableButtons(true);
         }
@@ -127,9 +128,7 @@ public class MainController {
         if(!listView.getSelectionModel().isEmpty()) {
             Country country = listView.getSelectionModel().getSelectedItem();
             if(Objects.equals(mode, "xml")){
-                WriteDomXml dom = new WriteDomXml();
-                dom.delete(country);
-                file.read();
+                file.deleteCountry(country);
                 listView.setItems(FXCollections.observableList(file.getCountries()));
             }
             else {
@@ -138,7 +137,7 @@ public class MainController {
         }
         else{
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setContentText(properties.getProperty("messageEAC"));
+            alert.setContentText("Enter a country");
             alert.showAndWait();
             setDisableButtons(true);
         }
