@@ -5,7 +5,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.SAXParser;
@@ -190,6 +189,15 @@ public class XmlFile {
             alert.setContentText(e.getMessage());
             alert.showAndWait();
         }
+    }
+    public boolean isExists(Country country){
+        boolean isExists = false;
+        int count = 0;
+        while(count<countries.size() && !isExists){
+            if(countries.get(count).getId() == country.getId()) isExists = true;
+            count++;
+        }
+        return isExists;
     }
     public List<Country> getCountries(){
         return countries;

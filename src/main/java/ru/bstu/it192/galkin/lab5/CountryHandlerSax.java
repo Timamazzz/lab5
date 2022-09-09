@@ -2,7 +2,6 @@ package ru.bstu.it192.galkin.lab5;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
-
 import java.util.ArrayList;
 import java.util.List;
 

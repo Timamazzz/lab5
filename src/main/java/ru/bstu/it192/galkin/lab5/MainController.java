@@ -2,16 +2,9 @@ package ru.bstu.it192.galkin.lab5;
 
 import javafx.collections.FXCollections;
 import javafx.scene.control.*;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Properties;
 
 public class MainController {
     public Label idLabel;
@@ -26,11 +19,10 @@ public class MainController {
     public ListView<Country> listView;
     public Button modeButton;
     public Button filterButton;
+    public Button convertButton;
     XmlFile file = new XmlFile();
-
     DataBase db = new DataBase();
     String mode = "xml";
-
 
     public void initialize() {
         try {
@@ -46,16 +38,18 @@ public class MainController {
     public void changeModeClick() {
         if(Objects.equals(mode, "xml")){
             listView.setItems(FXCollections.observableList(db.getCountries()));
-
             mode = "database";
+
             modeButton.setText("Database mode");
+            convertButton.setText("Write all to the file");
             setDisableButtons(true);
         }
         else {
             listView.setItems(FXCollections.observableList(file.getCountries()));
-
             mode = "xml";
+
             modeButton.setText("Xml mode");
+            convertButton.setText("Write all to the database");
             setDisableButtons(true);
         }
     }
@@ -81,8 +75,7 @@ public class MainController {
             alert.showAndWait();
         }
     }
-
-    public void onAddButtonClick() throws ParserConfigurationException, IOException, SAXException, TransformerException {
+    public void onAddButtonClick() {
         Country country = new Country(  nameTextField.getText().trim(),
                                 continentTextField.getText().trim(),
                                 Integer.parseInt(areaTextField.getText().trim()),
@@ -98,7 +91,7 @@ public class MainController {
             listView.setItems(FXCollections.observableList(db.getCountries()));
         }
     }
-    public void redactButtonClick() throws ParserConfigurationException, IOException, TransformerException, SAXException {
+    public void redactButtonClick() {
         if(!listView.getSelectionModel().isEmpty()){
             Country country = new Country(  listView.getSelectionModel().getSelectedItem().id,
                                     nameTextField.getText().trim(),
@@ -109,11 +102,11 @@ public class MainController {
                                             );
             if(Objects.equals(mode, "xml")){
                 file.redactCountry(country);
-                file.read();
                 listView.setItems(FXCollections.observableList(file.getCountries()));
             }
             else {
-
+                db.redactCountry(country);
+                listView.setItems(FXCollections.observableList(db.getCountries()));
             }
         }
         else {
@@ -124,7 +117,7 @@ public class MainController {
         }
 
     }
-    public void deleteButtonClick() throws ParserConfigurationException, IOException, SAXException, TransformerException {
+    public void deleteButtonClick() {
         if(!listView.getSelectionModel().isEmpty()) {
             Country country = listView.getSelectionModel().getSelectedItem();
             if(Objects.equals(mode, "xml")){
@@ -132,7 +125,8 @@ public class MainController {
                 listView.setItems(FXCollections.observableList(file.getCountries()));
             }
             else {
-
+                db.deleteCountry(country);
+                listView.setItems(FXCollections.observableList(db.getCountries()));
             }
         }
         else{
@@ -142,11 +136,10 @@ public class MainController {
             setDisableButtons(true);
         }
     }
-
     public void filterButtonClick() {
         try {
             List<Country> result = new ArrayList<>();
-            for (Country country : Objects.equals(mode, "xml")? file.getCountries() : new ArrayList<Country>()){
+            for (Country country : Objects.equals(mode, "xml")? file.getCountries() : db.getCountries()){
                 boolean isName = nameTextField.getText().trim().equals(country.getName()) || nameTextField.getText().trim().isEmpty();
                 boolean isContinent = continentTextField.getText().trim().equals(country.getContinent()) || continentTextField.getText().trim().isEmpty();
                 boolean isArea = areaTextField.getText().trim().isEmpty() || (Integer.parseInt(areaTextField.getText().trim())) == country.getArea();
@@ -160,6 +153,26 @@ public class MainController {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText(e.getMessage());
             alert.showAndWait();
+        }
+    }
+    public void ConvertButtonClick() {
+        if(Objects.equals(mode, "xml")){
+            for(Country country : file.getCountries()) {
+                if (db.isExists(country)) {
+                    db.redactCountry(country);
+                } else {
+                    db.addCountry(country);
+                }
+            }
+        }
+        else{
+            for(Country country : db.getCountries()) {
+                if (file.isExists(country)) {
+                    file.redactCountry(country);
+                } else {
+                    file.addCountry(country);
+                }
+            }
         }
     }
 }

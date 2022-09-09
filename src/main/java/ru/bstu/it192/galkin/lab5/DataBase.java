@@ -1,9 +1,7 @@
 package ru.bstu.it192.galkin.lab5;
 
 import javafx.scene.control.Alert;
-
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +44,6 @@ public class DataBase {
 
                 Country country = new Country(id, name, continent, area, population, capital);
                 countries.add(country);
-                int i = 0;
-
             }
             connection.close();
         } catch (Exception e) {
@@ -62,15 +58,14 @@ public class DataBase {
                     properties.getProperty("DataBaseUser"),
                     properties.getProperty("DataBasePassword"));
 
-            String countryString = "'" + country.getName() + "'" + ", " +
-                    "'" + country.getName() + "'" + ", " +
+            Statement statement = connection.createStatement();
+            statement.executeUpdate("insert countries(name, continent, area, population, capital) values (" +
+                    "'"+country.getName()+"'" + ", " +
+                    "'"+country.getContinent() + "'" + ", " +
                     country.getArea() + ", " +
                     country.getPopulation() + ", " +
-                    "'" + country.getName() + "'";
-
-            Statement statement = connection.createStatement();
-            statement.executeUpdate("insert countries(name, continent, area, population, capital) values (" + countryString + ")");
-
+                    "'" +country.getCapital() + "'"+")"
+            );
 
             read();
             connection.close();
@@ -79,6 +74,53 @@ public class DataBase {
             alert.setContentText(e.getMessage());
             alert.showAndWait();
         }
+    }
+    public void redactCountry(Country country){
+        try {
+            connection = DriverManager.getConnection(properties.getProperty("DataBaseUrl"),
+                    properties.getProperty("DataBaseUser"),
+                    properties.getProperty("DataBasePassword"));
+
+            Statement statement = connection.createStatement();
+            statement.executeUpdate("update countries set " +
+                    "name="+"'"+country.getName()+"'"+
+                    ",continent="+"'"+country.getContinent()+"'"+
+                    ",area="+country.getArea()+
+                    ",population="+country.getPopulation()+
+                    ",capital="+"'"+country.getCapital()+"'"+
+                    " where id="+country.getId());
+            read();
+            connection.close();
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
+    }
+    public void deleteCountry(Country country){
+        try {
+            connection = DriverManager.getConnection(properties.getProperty("DataBaseUrl"),
+                    properties.getProperty("DataBaseUser"),
+                    properties.getProperty("DataBasePassword"));
+
+            Statement statement = connection.createStatement();
+            statement.executeUpdate("delete from countries where id="+country.getId());
+            read();
+            connection.close();
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
+    }
+    public boolean isExists(Country country){
+        boolean isExists = false;
+        int count = 0;
+        while(count<countries.size() && !isExists){
+            if(countries.get(count).getId() == country.getId()) isExists = true;
+            count++;
+        }
+        return isExists;
     }
     public List<Country> getCountries(){
         return countries;
